@@ -29,8 +29,9 @@ test.describe('Booking', () => {
     await mainPage.verifyLoaded();
     await mainPage.bookDefaultPrescriptionAppointment();
     await mainPage.agreeToAllCheckbox.click();
-    await page.pause();
+    await page.waitForTimeout(1000);
     await mainPage.bookButton.click();
+    await page.waitForTimeout(1000);
     await expect(page).toHaveURL(/https:\/\/secure\.payu\.com\//);
   });
 
