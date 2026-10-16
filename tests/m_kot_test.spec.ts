@@ -36,7 +36,7 @@ test.describe('Booking', () => {
 
   // Better to login by API and use the state stored to avoid code duplication 
   // and time-consuming login process
-  // but for now, it is not covered in onboarding task
+  // but for now, it is not covered in onboarding task.
   test('should not book a prescription consultation without required agreements', async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.open();
