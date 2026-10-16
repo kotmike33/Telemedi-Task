@@ -23,7 +23,7 @@ export class LoginPage {
             has: page.getByText('Akceptuję', { exact: true }),
         });
     }
-
+//test
     async open() {
         await this.page.goto(LOGIN_URL);
         try {
