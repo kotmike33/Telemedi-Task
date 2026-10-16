@@ -16,7 +16,7 @@ export class MainPage {
         this.page = page;
         this.bookAppointmentButton = page.getByRole('button', { name: /Umów się/ });
         this.bookPrescriptionAppointmentButton = page.locator('[aria-label="Menu umawiania konsultacji"] > button:first-child');
-        this.selectDiseaseDiv = page.locator('.category-item > div:first-child');
+        this.selectDiseaseDiv = page.locator('.diseases-categories-wrapper > div:nth-child(2)');
         this.selectMedicationDiv = page.locator('.diseases-categories > div:nth-child(2)');
         this.agreementsSectionDiv = page.locator('.all-agreements.subscription-disabled');
         this.agreeToAllCheckbox = page.locator('.all-agreements.subscription-disabled > :first-child');
