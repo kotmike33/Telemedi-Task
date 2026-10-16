@@ -28,7 +28,7 @@ test.describe('Booking', () => {
     const mainPage = new MainPage(page);
     await mainPage.verifyLoaded();
     await mainPage.bookDefaultPrescriptionAppointment();
-    await expect(mainPage.agreementsSectionDiv).toBeVisible();
+    await expect(mainPage.agreeToAllCheckbox).toBeVisible();
     await mainPage.agreeToAllCheckbox.click();
     await mainPage.bookButton.click();
     await expect(page).toHaveURL(/https:\/\/secure\.payu\.com\//);
@@ -45,7 +45,7 @@ test.describe('Booking', () => {
     const mainPage = new MainPage(page);
     await mainPage.verifyLoaded();
     await mainPage.bookDefaultPrescriptionAppointment();
-    await expect(mainPage.agreementsSectionDiv).toBeVisible();
+    await expect(mainPage.agreeToAllCheckbox).toBeVisible();
     await mainPage.bookButton.click();
     await expect(mainPage.requiredFieldMessage).toBeVisible();
   });
