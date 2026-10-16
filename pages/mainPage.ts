@@ -17,7 +17,10 @@ export class MainPage {
         this.bookPrescriptionAppointmentButton = page.locator('[aria-label="Menu umawiania konsultacji"] > button:first-child');
         this.selectDiseaseDiv = page.locator('.diseases-categories-wrapper > div:nth-child(2)');
         this.selectMedicationDiv = page.locator('.diseases-categories > div:nth-child(2)');
-        this.agreeToAllCheckbox = page.locator('[class*="all-agreements"] > :first-child');
+        this.agreeToAllCheckbox = page.getByRole('checkbox', {
+            name: 'Zaznacz wszystkie',
+            exact: true,
+        });
         this.bookButton = page.locator('.buttons-wrapper > button:nth-child(2)');
         this.requiredFieldMessage = page.locator('span').filter({
             hasText: 'Pole jest wymagane',

@@ -29,7 +29,7 @@ test.describe('Booking', () => {
     await mainPage.verifyLoaded();
     await mainPage.bookDefaultPrescriptionAppointment();
     await expect(mainPage.agreeToAllCheckbox).toBeVisible();
-    await mainPage.agreeToAllCheckbox.click();
+    await mainPage.agreeToAllCheckbox.check();
     await mainPage.bookButton.click();
     await expect(page).toHaveURL(/https:\/\/secure\.payu\.com\//);
   });
