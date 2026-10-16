@@ -29,10 +29,9 @@ test.describe('Booking', () => {
     await mainPage.verifyLoaded();
     await mainPage.bookDefaultPrescriptionAppointment();
     await mainPage.agreeToAllCheckbox.click();
-    await page.waitForTimeout(1000);
+    page.waitForTimeout(500); // Wait for the checkbox state to be updated before clicking the book button
     await mainPage.bookButton.click();
-    await page.waitForTimeout(3000);
-    await expect(page).toHaveURL(/https:\/\/secure\.payu\.com\//);
+    await expect(page).toHaveURL(/https:\/\/secure\.payu\.com\//, { timeout: 5000 });
   });
 
   // Better to login by API and use the state stored to avoid code duplication 
