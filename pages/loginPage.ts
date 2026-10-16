@@ -17,7 +17,7 @@ export class LoginPage {
         this.usernameField = page.locator('#username');
         this.passwordField = page.locator('#password');
         this.loginButton = page.locator('button[type="submit"]');
-        this.invalidCredentialsMessage = page.getByText('Nieprawidłowy login lub hasło');
+        this.invalidCredentialsMessage = page.getByText('Nieprawidłowe dane logowania', { exact: false });
     }
 
     async open() {
