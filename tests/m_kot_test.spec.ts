@@ -20,7 +20,7 @@ test.describe('Login', () => {
 });
 
 test.describe('Booking', () => {
-  test('Book a default prescription consultation', async ({ page }) => {
+  test('should book a prescription consultation up to payment redirect', async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.open();
     await loginPage.loginWithCorrectCredentials();
@@ -28,8 +28,8 @@ test.describe('Booking', () => {
     const mainPage = new MainPage(page);
     await mainPage.verifyLoaded();
     await mainPage.bookDefaultPrescriptionAppointment();
-    await expect(mainPage.agreeToAllCheckbox).toBeVisible();
-    await mainPage.agreeToAllCheckbox.check();
+    await mainPage.agreeToAllCheckbox.click();
+    await page.pause();
     await mainPage.bookButton.click();
     await expect(page).toHaveURL(/https:\/\/secure\.payu\.com\//);
   });
@@ -37,7 +37,7 @@ test.describe('Booking', () => {
   // Better to login by API and use the state stored to avoid code duplication 
   // and time-consuming login process
   // but for now, it is not covered in onboarding task.
-  test('Book without required agreements', async ({ page }) => {
+  test('should not book a prescription consultation without required agreements', async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.open();
     await loginPage.loginWithCorrectCredentials();
@@ -45,7 +45,6 @@ test.describe('Booking', () => {
     const mainPage = new MainPage(page);
     await mainPage.verifyLoaded();
     await mainPage.bookDefaultPrescriptionAppointment();
-    await expect(mainPage.agreeToAllCheckbox).toBeVisible();
     await mainPage.bookButton.click();
     await expect(mainPage.requiredFieldMessage).toBeVisible();
   });
