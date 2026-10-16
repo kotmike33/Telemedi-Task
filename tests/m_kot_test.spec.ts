@@ -31,6 +31,7 @@ test.describe('Booking', () => {
     await mainPage.agreeToAllCheckbox.click();
     page.waitForTimeout(500); // Wait for the checkbox state to be updated before clicking the book button
     await mainPage.bookButton.click();
+    page.waitForTimeout(2000); // Wait for the page to load after clicking the book button
     await expect(page).toHaveURL(/https:\/\/secure\.payu\.com\//, { timeout: 5000 });
   });
 
