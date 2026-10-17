@@ -1,9 +1,8 @@
 import { expect, Locator, Page } from '@playwright/test';
 import {
-    LOGIN_SUCCESS_URL,
-    LOGIN_URL,
+    LOGIN_PAGE_URL,
     TEST_CREDENTIALS,
-} from '../constants/constants';
+} from '../constants/appConstants';
 
 export class LoginPage {
     readonly page: Page;
@@ -25,7 +24,7 @@ export class LoginPage {
     }
 
     async open() {
-        await this.page.goto(LOGIN_URL);
+        await this.page.goto(LOGIN_PAGE_URL);
         try {
             await this.acceptAllCookiesButton.waitFor({ state: 'visible', timeout: 1500 });
         } catch {
@@ -46,3 +45,4 @@ export class LoginPage {
         await this.loginButton.click();
     }
 }
+

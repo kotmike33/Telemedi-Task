@@ -1,20 +1,20 @@
 import { expect, Locator, Page } from '@playwright/test';
-import { MAIN_PAGE_URL } from '../constants/constants';
+import { MAIN_PAGE_URL } from '../constants/appConstants';
 
 export class MainPage {
     readonly page: Page;
-    readonly bookAppointmentButton: Locator;
+    readonly bookAppointmentMenuButton: Locator;
     readonly bookPrescriptionAppointmentButton: Locator;
     readonly bookRemoteAppointmentButton: Locator;
-    readonly selectDiseaseDiv: Locator;
-    readonly selectMedicationDiv: Locator;
-    readonly agreeToAllCheckbox: Locator;
-    readonly bookButton: Locator;
+    readonly diseaseOption: Locator;
+    readonly medicationOption: Locator;
+    readonly allAgreementsCheckbox: Locator;
+    readonly submitBookingButton: Locator;
     readonly requiredFieldMessages: Locator;
 
-    readonly remoteAppointmentTimeSlotButtons: Locator;
-    readonly remoteAppointmentDateSlots: Locator;
-    readonly remoteAppointmentConfirmButton: Locator;
+    readonly remoteAppointmentTimeSlots: Locator;
+    readonly remoteAppointmentDateOptions: Locator;
+    readonly remoteAppointmentPaymentButton: Locator;
     readonly visitSummaryTime: Locator;
     readonly visitSummaryDate: Locator;
     readonly visitSummaryName: Locator;
@@ -24,23 +24,23 @@ export class MainPage {
 
     constructor(page: Page) {
         this.page = page;
-        this.bookAppointmentButton = page.getByRole('button', { name: /Umów się/ });
+        this.bookAppointmentMenuButton = page.getByRole('button', { name: /Umów się/ });
         this.bookPrescriptionAppointmentButton = page.locator('[aria-label="Menu umawiania konsultacji"] > button:first-child');
         this.bookRemoteAppointmentButton = page.locator('[aria-label="Menu umawiania konsultacji"] > button:nth-child(2)');
-        this.selectDiseaseDiv = page.getByText('Alergia');
-        this.selectMedicationDiv = page.getByText('Aerius');
-        this.agreeToAllCheckbox = page.locator('label[for="checkAll"]');
-        this.bookButton = page.locator('.buttons-wrapper > button:nth-child(2)');
+        this.diseaseOption = page.getByText('Alergia');
+        this.medicationOption = page.getByText('Aerius');
+        this.allAgreementsCheckbox = page.locator('label[for="checkAll"]');
+        this.submitBookingButton = page.locator('.buttons-wrapper > button:nth-child(2)');
         this.requiredFieldMessages = page.locator('span').filter({
             hasText: 'Pole jest wymagane',
         });
-        this.remoteAppointmentTimeSlotButtons = page.locator('button').filter({ has: page.locator('p', { hasText: 'Umów za' }) });
-        this.remoteAppointmentDateSlots = page.locator(`label[for*="${new Date().getFullYear()}"]`);
+        this.remoteAppointmentTimeSlots = page.locator('button').filter({ has: page.locator('p', { hasText: 'Umów za' }) });
+        this.remoteAppointmentDateOptions = page.locator(`label[for*="${new Date().getFullYear()}"]`);
         this.visitSummaryTime = page.locator('.booked-visit-summary__dates-item').first();
         this.visitSummaryDate = page.locator('.booked-visit-summary__dates-item.booked-visit-summary__dates-item--center').first();
         this.visitSummaryName = page.locator('.booked-visit-summary__name');
         this.visitSummaryDescription = page.locator('.booked-visit-summary__description');
-        this.remoteAppointmentConfirmButton = page.getByText('Opłać za', { exact: false }).first();
+        this.remoteAppointmentPaymentButton = page.getByText('Opłać za', { exact: false }).first();
         this.closeReminderPopupButton = page.locator('button[title="Zamknij"]');
     }
 
@@ -55,38 +55,38 @@ export class MainPage {
         }
     }
 
-    async verifyLoaded() {
+    async verifyMainPageLoaded() {
         await expect(this.page).toHaveURL(MAIN_PAGE_URL);
         await this.closeReminderPopupIfVisible();
-        await expect(this.bookAppointmentButton).toBeVisible();
+        await expect(this.bookAppointmentMenuButton).toBeVisible();
     }
 
-    async bookDefaultPrescriptionAppointment() {
-        await this.bookAppointmentButton.click();
+    async startPrescriptionBookingWithDefaults() {
+        await this.bookAppointmentMenuButton.click();
         await this.bookPrescriptionAppointmentButton.click();
         await expect(this.page).toHaveURL('https://testyautomatyczne.telemedi.com/pl/make-prescription-consultation');
-        await this.selectDiseaseDiv.click();
-        await this.selectMedicationDiv.click();
+        await this.diseaseOption.click();
+        await this.medicationOption.click();
     }
 
-    async bookDefaultRemoteAppointment() {
-        await this.bookAppointmentButton.click();
+    async bookFirstAvailableRemoteAppointment() {
+        await this.bookAppointmentMenuButton.click();
         await this.bookRemoteAppointmentButton.click();
         await expect(this.page).toHaveURL('https://testyautomatyczne.telemedi.com/pl/make-consultation');
         try {
-            await this.remoteAppointmentTimeSlotButtons.first().waitFor({
+            await this.remoteAppointmentTimeSlots.first().waitFor({
                 state: 'visible',
                 timeout: 5000,
             });
         } catch (timeoutError) {
             console.log('No time slots appeared for today, selecting the next available date.');
-            await this.remoteAppointmentDateSlots.nth(2).click();
-            await this.remoteAppointmentTimeSlotButtons.first().waitFor({
+            await this.remoteAppointmentDateOptions.nth(2).click();
+            await this.remoteAppointmentTimeSlots.first().waitFor({
                 state: 'visible',
                 timeout: 10000,
             });
         }
-        await this.remoteAppointmentTimeSlotButtons.first().click();
+        await this.remoteAppointmentTimeSlots.first().click();
         await expect(this.visitSummaryTime).toBeVisible();
         const bookedTimeSlot = (await this.visitSummaryTime.innerText())?.trim().match(/\d{2}:\d{2}(?=-)/)?.[0];
         const bookedDate = (await this.visitSummaryDate.innerText())?.replace(/^.*?,\s*/, '').trim();
@@ -99,7 +99,7 @@ export class MainPage {
             throw new Error('Booking details are incomplete; unable to verify the created booking.');
         }
 
-        await this.remoteAppointmentConfirmButton.click();
+        await this.remoteAppointmentPaymentButton.click();
 
 
         return {
@@ -128,3 +128,4 @@ export class MainPage {
         }
     }
 }
+
