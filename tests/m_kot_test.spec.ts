@@ -49,4 +49,23 @@ test.describe('Booking', () => {
     await mainPage.bookButton.click();
     await mainPage.verifyRequiredFieldMessages();
   });
+
+  test('should create a booking and then verify it', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.open();
+    await loginPage.loginWithCorrectCredentials();
+
+    const mainPage = new MainPage(page);
+    await mainPage.verifyLoaded();
+    const {
+        bookedTimeSlot,
+        bookedDay,
+        bookedYear,
+        bookedName,
+        bookedDescription
+    } = await mainPage.bookDefaultRemoteAppointment();
+
+    await mainPage.verifyBookedAppointmentDetails(bookedTimeSlot, bookedDay, bookedYear, bookedName, bookedDescription);
+
+  });
 });
