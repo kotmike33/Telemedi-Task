@@ -2,7 +2,7 @@ import { expect, Locator, Page } from '@playwright/test';
 import {
     LOGIN_PAGE_URL,
     TEST_CREDENTIALS,
-} from '../constants/appConstants';
+} from '../constants/constants';
 
 export class LoginPage {
     readonly page: Page;
