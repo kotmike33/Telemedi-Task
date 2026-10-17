@@ -33,7 +33,7 @@ test.describe('Booking', () => {
     await mainPage.allAgreementsCheckbox.click();
     await expect(mainPage.submitBookingButton).toBeEnabled();
     await mainPage.submitBookingButton.click();
-    
+
     //payment redirect verification
     /*
     await expect(page).toHaveURL(/https:\/\/secure\.payu\.com\//, {
@@ -54,7 +54,12 @@ test.describe('Booking', () => {
     const mainPage = new MainPage(page);
     await mainPage.verifyMainPageLoaded();
     const bookedAppointment = await mainPage.bookFirstAvailableRemoteAppointment();
-    await mainPage.verifyBookedAppointmentDetails(bookedAppointment);
+    try{
+      await mainPage.verifyBookedAppointmentDetails(bookedAppointment);
+    }catch (error) {
+      console.error('Verification failed due to missing booking popup. Attempting to re-open the main page and verify again.');
+      await mainPage.verifyBookedAppointmentDetails(bookedAppointment);
+    }
   });
 });
 

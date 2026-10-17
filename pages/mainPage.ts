@@ -142,7 +142,6 @@ export class MainPage {
         const mainSection = this.page.locator('//main/section');
         const summarySpans = mainSection.locator('span');
         const summaryParagraphs = mainSection.locator('p');
-        await this.page.pause();
         await expect(summarySpans.filter({ hasText: details.bookedTimeSlot }).first()).toBeVisible();
         await expect(summarySpans.filter({ hasText: details.bookedDay }).first()).toBeVisible();
         await expect(summarySpans.filter({ hasText: details.bookedYear }).first()).toBeVisible();
