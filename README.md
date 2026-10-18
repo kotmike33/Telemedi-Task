@@ -4,12 +4,12 @@ This project uses Playwright to check important user flows on the Telemedi test 
 ## Project layout
 - `tests/` — test scenarios
 - `pages/` — login, main page, prescription consultation, and remote consultation page objects
-- `types/remoteAppointmentDetails.ts` — details captured and stored to verify a remote appointment creates
+- `types/remoteAppointmentDetails.ts` — details captured to verify a created remote appointment
 - `constants/constants.ts` — site URLs and test account credentials
 - `playwright.config.ts` — Playwright settings; Chromium is the active browser project
 - `azure-pipelines.yml` — CI pipeline
 
-## Known issues (comented in code)
+## Known issues
 - Remote appointment booking uses a fixed one-second wait to work around a time-slot widget refresh race.
 - The prescription test expects the PayU redirect within five seconds; the redirect is known to be inconsistent.
 - Specialization selector regression test is marked as a known bug.
